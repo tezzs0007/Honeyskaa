@@ -64,8 +64,8 @@ h2{font-size:40px;line-height:1}
 @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
 .reaction{font-family:Caveat,cursive;font-size:26px;line-height:1.05;margin:14px 4px 0;color:#8e1640;min-height:30px}
 
-.letter-screen{display: none;padding: 0;overflow: visible;}
-.letter-screen.active{display: block;}
+.letter-screen{display:none;padding:0;overflow:visible}
+.letter-screen.active{display:block}
 .letter-bg{position:fixed;inset:0;z-index:1;overflow:hidden;background:linear-gradient(135deg,#ffdae3,#ff6689 50%,#bd174f)}
 .letter-bg:after{content:"";position:absolute;inset:0;background:rgba(255,239,243,.35)}
 .photo{position:absolute;left:50%;top:50%;width:clamp(120px,31vw,180px);padding:9px 9px 28px;background:rgba(255,251,247,.76);box-shadow:0 18px 45px rgba(85,0,30,.16);border-radius:2px;filter:blur(2.4px);opacity:.31;transform:translate(-50%,-50%) rotate(var(--rot));animation:drift var(--dur) ease-in-out infinite alternate;object-fit:contain}
@@ -93,6 +93,17 @@ h2{font-size:40px;line-height:1}
 .toast{position:fixed;z-index:100;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);padding:10px 15px;background:rgba(55,0,25,.84);color:#fff;border-radius:999px;font-size:13px;opacity:0;transition:.25s;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+#secretEye{
+  font-size:58px;
+  margin:18px 0 8px;
+  cursor:pointer;
+  user-select:none;
+  display:inline-block;
+  transition:transform .2s;
+  line-height:1;
+}
+#secretEye:active{transform:scale(1.2)}
+
 @media (min-width:600px){
  .letter-content{padding-top:90px}
  .paper{padding:52px 55px 58px}
@@ -107,6 +118,7 @@ h2{font-size:40px;line-height:1}
 <div id="app">
   <div class="ambient" id="ambient"></div>
 
+  <!-- WELCOME -->
   <section class="screen active" id="welcome">
     <div class="card">
       <span class="lock-icon">💗</span>
@@ -117,6 +129,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- NAME LOCK -->
   <section class="screen" id="nameLock">
     <div class="card">
       <span class="lock-icon">🔒</span>
@@ -130,6 +143,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- BIRTHDAY -->
   <section class="screen" id="birthday">
     <div class="card">
       <span class="lock-icon">🎂</span>
@@ -142,6 +156,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- QUIZ -->
   <section class="screen" id="quiz">
     <div class="quiz-wrap">
       <div class="progress" id="progress"></div>
@@ -154,6 +169,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- ACCESS GRANTED -->
   <section class="screen" id="granted">
     <div class="card">
       <span class="lock-icon">🔓</span>
@@ -164,6 +180,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- LETTER -->
   <section class="screen letter-screen" id="letter">
     <div class="letter-bg" id="photoBg"></div>
     <div class="letter-content">
@@ -224,17 +241,21 @@ h2{font-size:40px;line-height:1}
 
         <div class="signature">Your Batman 🦇❤️<br><span style="font-size:22px">a.k.a Tejas</span></div>
 
-        <div class="mini-note" style="text-align:center;margin-top:28px">
-  There's something hidden in here… 🧿
-</div>
+        <!-- BIG SECRET EYE + CONTINUE BUTTON -->
+        <div style="text-align:center; margin-top:36px;">
+          <div class="mini-note">There's something hidden in here…</div>
+          <div id="secretEye">🧿</div>
+          <div style="font-size:13px; opacity:0.6; margin-top:4px;">(tap me 3 times)</div>
 
-<button class="primary" style="margin-top: 30px;" onclick="go('finalEyes')">
-  Continue 👀
-</button>
+          <button class="primary" style="margin-top:28px;" onclick="go('finalEyes')">
+            Continue 👀
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
+  <!-- EYES PHOTO -->
   <section class="screen" id="finalEyes">
     <div class="eyes-wrap">
       <img src="eyes.jpg" alt="The eyes photo">
@@ -243,6 +264,7 @@ h2{font-size:40px;line-height:1}
     </div>
   </section>
 
+  <!-- NICKNAME -->
   <section class="screen" id="nickname">
     <div class="card nickname-card">
       <div class="kicker">Last tiny thing</div>
@@ -259,17 +281,17 @@ h2{font-size:40px;line-height:1}
 
 <script>
 const photos = [
-        'photos/photo_001.jpg','photos/photo_002.jpg','photos/photo_003.jpg','photos/photo_004.jpg','photos/photo_005.jpg',
-        'photos/photo_006.jpg','photos/photo_007.jpg','photos/photo_008.jpg','photos/photo_009.jpg','photos/photo_010.jpg',
-        'photos/photo_011.jpg','photos/photo_012.jpg','photos/photo_013.jpg','photos/photo_014.jpg','photos/photo_015.jpg',
-        'photos/photo_016.jpg','photos/photo_017.jpg','photos/photo_018.jpg','photos/photo_019.jpg','photos/photo_020.jpg',
-        'photos/photo_021.jpg','photos/photo_022.jpg','photos/photo_023.jpg','photos/photo_024.jpg','photos/photo_025.jpg',
-        'photos/photo_026.jpg','photos/photo_027.jpg','photos/photo_028.jpg','photos/photo_029.jpg','photos/photo_030.jpg',
-        'photos/photo_031.jpg','photos/photo_032.jpg','photos/photo_033.jpg','photos/photo_034.jpg','photos/photo_035.jpg',
-        'photos/photo_036.jpg','photos/photo_037.jpg','photos/photo_038.jpg','photos/photo_039.jpg','photos/photo_040.jpg',
-        'photos/photo_041.jpg','photos/photo_042.jpg','photos/photo_043.jpg','photos/photo_044.jpg','photos/photo_045.jpg',
-        'photos/photo_046.jpg','photos/photo_047.jpg','photos/photo_048.jpg','photos/photo_049.jpg','photos/photo_050.jpg',
-        'photos/photo_051.jpg','photos/photo_052.heic','photos/photo_053.jpg','photos/photo_054.jpg'
+  'photos/photo_001.jpg','photos/photo_002.jpg','photos/photo_003.jpg','photos/photo_004.jpg','photos/photo_005.jpg',
+  'photos/photo_006.jpg','photos/photo_007.jpg','photos/photo_008.jpg','photos/photo_009.jpg','photos/photo_010.jpg',
+  'photos/photo_011.jpg','photos/photo_012.jpg','photos/photo_013.jpg','photos/photo_014.jpg','photos/photo_015.jpg',
+  'photos/photo_016.jpg','photos/photo_017.jpg','photos/photo_018.jpg','photos/photo_019.jpg','photos/photo_020.jpg',
+  'photos/photo_021.jpg','photos/photo_022.jpg','photos/photo_023.jpg','photos/photo_024.jpg','photos/photo_025.jpg',
+  'photos/photo_026.jpg','photos/photo_027.jpg','photos/photo_028.jpg','photos/photo_029.jpg','photos/photo_030.jpg',
+  'photos/photo_031.jpg','photos/photo_032.jpg','photos/photo_033.jpg','photos/photo_034.jpg','photos/photo_035.jpg',
+  'photos/photo_036.jpg','photos/photo_037.jpg','photos/photo_038.jpg','photos/photo_039.jpg','photos/photo_040.jpg',
+  'photos/photo_041.jpg','photos/photo_042.jpg','photos/photo_043.jpg','photos/photo_044.jpg','photos/photo_045.jpg',
+  'photos/photo_046.jpg','photos/photo_047.jpg','photos/photo_048.jpg','photos/photo_049.jpg','photos/photo_050.jpg',
+  'photos/photo_051.jpg','photos/photo_052.heic','photos/photo_053.jpg','photos/photo_054.jpg'
 ];
 
 const questions = [
@@ -314,81 +336,87 @@ const questions = [
   }
 ];
 
-let qi=0;
+let qi = 0;
+let eyeTaps = 0;
+let eyeTimer = null;
 
 function go(id){
-  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
   window.scrollTo(0,0);
 }
 
 function checkName(){
   startMusic("Kaadhal Aasai.mp3");
-  const v=document.getElementById("nameInput").value.trim().toLowerCase();
-  const e=document.getElementById("nameError");
-  if(v==="batman"){
-    e.textContent="";
+  const v = document.getElementById("nameInput").value.trim().toLowerCase();
+  const e = document.getElementById("nameError");
+  if(v === "batman"){
+    e.textContent = "";
     go("birthday");
-  }else{
-    e.textContent="Hmm… wrong answer 😭 Try again.";
+  } else {
+    e.textContent = "Hmm… wrong answer 😭 Try again.";
   }
 }
 
 function checkBirthday(){
-  const v=document.getElementById("birthdayInput").value.trim();
-  const e=document.getElementById("birthdayError");
-  if(v==="13/10/2008"){
-    e.textContent="";
-    qi=0; renderQuestion(); go("quiz");
-  }else e.textContent="Batman birthday illa idhu 😭";
+  const v = document.getElementById("birthdayInput").value.trim();
+  const e = document.getElementById("birthdayError");
+  if(v === "13/10/2008"){
+    e.textContent = "";
+    qi = 0;
+    renderQuestion();
+    go("quiz");
+  } else {
+    e.textContent = "Batman birthday illa idhu 😭";
+  }
 }
 
 function renderQuestion(){
-  const q=questions[qi];
-  document.getElementById("qnum").textContent=`QUESTION ${qi+1} / ${questions.length}`;
-  document.getElementById("question").textContent=q.q;
-  document.getElementById("reaction").textContent="";
-  const ans=document.getElementById("answers");
-  ans.innerHTML="";
-  const prog=document.getElementById("progress");
-  prog.innerHTML=questions.map((_,i)=>`<div class="dot ${i<qi?'done':''}"></div>`).join("");
+  const q = questions[qi];
+  document.getElementById("qnum").textContent = `QUESTION ${qi+1} / ${questions.length}`;
+  document.getElementById("question").textContent = q.q;
+  document.getElementById("reaction").textContent = "";
+  const ans = document.getElementById("answers");
+  ans.innerHTML = "";
+  const prog = document.getElementById("progress");
+  prog.innerHTML = questions.map((_,i) => `<div class="dot ${i < qi ? 'done' : ''}"></div>`).join("");
 
-  if(q.type==="text"){
-    ans.innerHTML=`<input class="field" id="freeAnswer" autocomplete="off" placeholder="Type literally anything…"><button class="primary" onclick="submitText()">Submit 👀</button>`;
-  }else{
-    q.options.forEach((o,i)=>{
-      const b=document.createElement("button");
-      b.className="option";
-      b.textContent=o;
-      b.onclick=()=>answerOption(i,b);
+  if(q.type === "text"){
+    ans.innerHTML = `<input class="field" id="freeAnswer" autocomplete="off" placeholder="Type literally anything…"><button class="primary" onclick="submitText()">Submit 👀</button>`;
+  } else {
+    q.options.forEach((o,i) => {
+      const b = document.createElement("button");
+      b.className = "option";
+      b.textContent = o;
+      b.onclick = () => answerOption(i,b);
       ans.appendChild(b);
     });
   }
 }
 
 function submitText(){
-  const v=document.getElementById("freeAnswer").value.trim();
-  if(!v)return;
-  document.getElementById("reaction").textContent=questions[qi].reaction;
-  setTimeout(nextQuestion,1150);
+  const v = document.getElementById("freeAnswer").value.trim();
+  if(!v) return;
+  document.getElementById("reaction").textContent = questions[qi].reaction;
+  setTimeout(nextQuestion, 1150);
 }
 
-function answerOption(i,b){
-  const q=questions[qi];
-  if(i===q.correct){
+function answerOption(i, b){
+  const q = questions[qi];
+  if(i === q.correct){
     b.classList.add("correct");
-    document.getElementById("reaction").textContent=q.correctReaction || q.reactions?.[i] || "Correct 😭❤️";
-    setTimeout(nextQuestion,1250);
-  }else{
+    document.getElementById("reaction").textContent = q.correctReaction || q.reactions?.[i] || "Correct 😭❤️";
+    setTimeout(nextQuestion, 1250);
+  } else {
     b.classList.add("wrong");
-    if(q.reactions) document.getElementById("reaction").textContent=q.reactions[i] || "Nope 😭 try again.";
-    else document.getElementById("reaction").textContent=q.wrong;
+    if(q.reactions) document.getElementById("reaction").textContent = q.reactions[i] || "Nope 😭 try again.";
+    else document.getElementById("reaction").textContent = q.wrong;
   }
 }
 
 function nextQuestion(){
   qi++;
-  if(qi>=questions.length) go("granted");
+  if(qi >= questions.length) go("granted");
   else renderQuestion();
 }
 
@@ -399,93 +427,103 @@ function openLetter(){
 }
 
 function buildPhotos(){
-  const bg=document.getElementById("photoBg");
-  if(bg.dataset.ready)return;
-  photos.forEach((src,i)=>{
-    const img=document.createElement("img");
-    img.className="photo";
-    img.src=src;
-    img.loading="lazy";
+  const bg = document.getElementById("photoBg");
+  if(bg.dataset.ready) return;
+  photos.forEach((src) => {
+    const img = document.createElement("img");
+    img.className = "photo";
+    img.src = src;
+    img.loading = "lazy";
     img.style.setProperty("--rot", `${-12 + Math.random()*24}deg`);
     img.style.setProperty("--dur", `${18 + Math.random()*13}s`);
     img.style.setProperty("--dx", `${25 + Math.random()*80}px`);
     img.style.setProperty("--dy", `${25 + Math.random()*80}px`);
-    img.style.left=`${Math.random()*100}%`;
-    img.style.top=`${Math.random()*100}%`;
+    img.style.left = `${Math.random()*100}%`;
+    img.style.top = `${Math.random()*100}%`;
     bg.appendChild(img);
   });
-  bg.dataset.ready="1";
+  bg.dataset.ready = "1";
 }
 
 function startMusic(file){
-  let a=document.getElementById("music");
+  let a = document.getElementById("music");
   if(!a){
-    a=document.createElement("audio"); a.id="music"; a.loop=true; a.preload="auto"; document.body.appendChild(a);
+    a = document.createElement("audio");
+    a.id = "music";
+    a.loop = true;
+    a.preload = "auto";
+    document.body.appendChild(a);
   }
-  a.src="audio/"+encodeURIComponent(file);
-  a.play().catch(()=>showToast("Tap anywhere to start the music 🎵"));
+  a.src = "audio/" + encodeURIComponent(file);
+  a.play().catch(() => showToast("Tap anywhere to start the music 🎵"));
 }
 
-document.addEventListener("click",()=>{
-  const a=document.getElementById("music");
+document.addEventListener("click", () => {
+  const a = document.getElementById("music");
   if(a && a.paused) a.play().catch(()=>{});
-},{once:false});
+});
 
-let eyeTaps=0, eyeTimer=null;
 function addAmbient(){
-  const symbols=["💓","🫀","🫂","🌍","💗","🧿","🪬","🫶","💖","💝","💕","💞","❤️","✨"];
-  const amb=document.getElementById("ambient");
-  for(let i=0;i<30;i++){
-    const s=document.createElement("span");
-    s.className="emoji";
-    s.textContent=symbols[i%symbols.length];
-    s.style.left=Math.random()*100+"%";
-    s.style.top=Math.random()*100+"%";
-    s.style.fontSize=(12+Math.random()*18)+"px";
-    s.style.setProperty("--dur",(5+Math.random()*8)+"s");
-    s.style.animationDelay=(-Math.random()*8)+"s";
+  const symbols = ["💓","🫀","🫂","🌍","💗","🧿","🪬","🫶","💖","💝","💕","💞","❤️","✨"];
+  const amb = document.getElementById("ambient");
+  for(let i=0; i<30; i++){
+    const s = document.createElement("span");
+    s.className = "emoji";
+    s.textContent = symbols[i % symbols.length];
+    s.style.left = Math.random()*100 + "%";
+    s.style.top = Math.random()*100 + "%";
+    s.style.fontSize = (12 + Math.random()*18) + "px";
+    s.style.setProperty("--dur", (5 + Math.random()*8) + "s");
+    s.style.animationDelay = (-Math.random()*8) + "s";
     amb.appendChild(s);
   }
 }
 addAmbient();
 
 function showToast(t){
-  const x=document.getElementById("toast"); x.textContent=t; x.classList.add("show");
-  setTimeout(()=>x.classList.remove("show"),2200);
+  const x = document.getElementById("toast");
+  x.textContent = t;
+  x.classList.add("show");
+  setTimeout(() => x.classList.remove("show"), 2200);
 }
 
 function sendNickname(){
-  const v=document.getElementById("nicknameInput").value.trim();
-  if(!v){showToast("Batman is waiting for an answer 😭");return;}
-  const text=`Honeyska's answer 💗%0A%0AWhat should Batman call me?%0A${encodeURIComponent(v)}%0A%0A— sent from your little website 🦇`;
-  window.location.href=`https://wa.me/919342466488?text=${text}`;
+  const v = document.getElementById("nicknameInput").value.trim();
+  if(!v){ showToast("Batman is waiting for an answer 😭"); return; }
+  const text = `Honeyska's answer 💗%0A%0AWhat should Batman call me?%0A${encodeURIComponent(v)}%0A%0A— sent from your little website 🦇`;
+  window.location.href = `https://wa.me/919342466488?text=${text}`;
 }
 
-// Secret: tap the 🧿 ambient emoji three times while the letter is open.
-document.addEventListener("click",(ev)=>{
-  if(!document.getElementById("letter").classList.contains("active"))return;
-  if(ev.target && ev.target.classList.contains("emoji") && ev.target.textContent==="🧿"){
-    eyeTaps++;
-    clearTimeout(eyeTimer);
-    eyeTimer=setTimeout(()=>eyeTaps=0,1200);
-    if(eyeTaps===3){
-      eyeTaps=0;
-      showToast("You found something… 👀");
-      setTimeout(()=>go("finalEyes"),450);
-    }
+// Big 🧿 – tap 3 times
+document.getElementById("secretEye").addEventListener("click", function(){
+  eyeTaps++;
+  this.style.transform = "scale(1.25)";
+  setTimeout(() => this.style.transform = "scale(1)", 150);
+
+  clearTimeout(eyeTimer);
+  eyeTimer = setTimeout(() => eyeTaps = 0, 1600);
+
+  if(eyeTaps === 3){
+    eyeTaps = 0;
+    showToast("You found something… 👀");
+    setTimeout(() => go("finalEyes"), 500);
   }
 });
 
-// Auto format birthday as DD/MM/YYYY
-document.getElementById("birthdayInput").addEventListener("input", function(e) {
+// Auto format birthday
+document.getElementById("birthdayInput").addEventListener("input", function(e){
   let value = e.target.value.replace(/\D/g, "");
-  if (value.length > 2) value = value.slice(0,2) + "/" + value.slice(2);
-  if (value.length > 5) value = value.slice(0,5) + "/" + value.slice(5,9);
+  if(value.length > 2) value = value.slice(0,2) + "/" + value.slice(2);
+  if(value.length > 5) value = value.slice(0,5) + "/" + value.slice(5,9);
   e.target.value = value;
 });
 
-document.getElementById("nameInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkName()});
-document.getElementById("birthdayInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkBirthday()});
+document.getElementById("nameInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") checkName();
+});
+document.getElementById("birthdayInput").addEventListener("keydown", e => {
+  if(e.key === "Enter") checkBirthday();
+});
 </script>
 </body>
 </html>
