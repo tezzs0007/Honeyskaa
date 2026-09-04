@@ -512,6 +512,13 @@ document.addEventListener("click",(ev)=>{
     }
   }
 });
+  // Auto format birthday as DD/MM/YYYY
+document.getElementById("birthdayInput").addEventListener("input", function(e) {
+  let value = e.target.value.replace(/\D/g, ""); // only numbers
+  if (value.length > 2) value = value.slice(0,2) + "/" + value.slice(2);
+  if (value.length > 5) value = value.slice(0,5) + "/" + value.slice(5,9);
+  e.target.value = value;
+});
 
 document.getElementById("nameInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkName()});
 document.getElementById("birthdayInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkBirthday()});
