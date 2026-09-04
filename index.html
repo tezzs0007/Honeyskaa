@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#ff5b79">
+<title>For Honeyska — Your Batman 🦇</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap');
+
+:root{
+  --pink:#ff4f78; --deep:#a70d42; --rose:#ffb3c7; --cream:#fff8f5;
+  --ink:#4c1730; --glass:rgba(255,255,255,.72);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#ff6c8d}
+body{font-family:"DM Sans",system-ui,sans-serif;color:var(--ink);overflow-x:hidden}
+button,input{font:inherit}
+button{border:0;cursor:pointer}
+#app{min-height:100svh;position:relative;overflow:hidden;
+ background:
+ radial-gradient(circle at 10% 15%,rgba(255,255,255,.34) 0 2px,transparent 3px),
+ radial-gradient(circle at 90% 30%,rgba(255,255,255,.28) 0 3px,transparent 4px),
+ linear-gradient(145deg,#ffcad6 0%,#ff7192 38%,#ef315f 68%,#a70d42 100%);
+}
+#app:before,#app:after{content:"";position:fixed;inset:-30%;pointer-events:none;opacity:.16}
+#app:before{background:repeating-radial-gradient(ellipse at center,transparent 0 28px,rgba(255,255,255,.55) 29px 31px);transform:rotate(-13deg)}
+#app:after{background-image:radial-gradient(rgba(255,255,255,.55) 1px,transparent 1px);background-size:22px 22px;mix-blend-mode:screen}
+.screen{position:relative;z-index:10;min-height:100svh;display:none;align-items:center;justify-content:center;padding:calc(24px + env(safe-area-inset-top)) 18px calc(28px + env(safe-area-inset-bottom));animation:screenIn .65s ease both}
+.screen.active{display:flex}
+@keyframes screenIn{from{opacity:0;transform:scale(.985) translateY(10px)}to{opacity:1;transform:none}}
+.ambient{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.emoji{position:absolute;animation:float var(--dur) ease-in-out infinite alternate;opacity:.68;filter:drop-shadow(0 5px 8px rgba(120,0,50,.12))}
+@keyframes float{from{transform:translate3d(0,12px,0) rotate(-5deg)}to{transform:translate3d(0,-18px,0) rotate(6deg)}}
+
+.card{width:min(100%,430px);padding:34px 25px 30px;border-radius:32px;background:var(--glass);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 24px 80px rgba(117,0,45,.25),inset 0 1px 0 rgba(255,255,255,.8);text-align:center;position:relative}
+.kicker{font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;opacity:.62}
+h1,h2{font-family:Caveat,cursive;margin:8px 0 12px;color:#8e1640}
+h1{font-size:48px;line-height:.95}
+h2{font-size:40px;line-height:1}
+.subtitle{font-size:15px;line-height:1.55;opacity:.82}
+.primary{width:100%;margin-top:22px;padding:15px 18px;border-radius:18px;background:linear-gradient(135deg,#ff3f6c,#b20d46);color:#fff;font-weight:700;box-shadow:0 12px 25px rgba(178,13,70,.25);transition:.2s}
+.primary:active{transform:scale(.97)}
+.field{width:100%;margin-top:18px;padding:15px 16px;border:1px solid rgba(142,22,64,.14);background:rgba(255,255,255,.82);border-radius:16px;outline:none;text-align:center;color:#661334}
+.field:focus{box-shadow:0 0 0 4px rgba(255,79,120,.18)}
+.hint{margin-top:11px;font-size:13px;opacity:.65}
+.error{min-height:21px;margin-top:10px;font-size:13px;color:#a0003e;font-weight:700}
+.success{font-family:Caveat,cursive;font-size:22px;margin-top:15px;color:#8e1640}
+
+.lock-icon{font-size:45px;display:block;animation:wiggle 2.5s ease-in-out infinite}
+@keyframes wiggle{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(5deg)}}
+
+.quiz-wrap{width:min(100%,460px)}
+.progress{display:flex;gap:7px;margin:0 4px 16px}
+.dot{height:5px;flex:1;border-radius:9px;background:rgba(255,255,255,.45)}
+.dot.done{background:#fff}
+.quiz-card{padding:28px 22px 25px}
+.qnum{font-size:12px;letter-spacing:.12em;font-weight:700;opacity:.55}
+.question{font-family:Caveat,cursive;font-size:34px;line-height:1.05;color:#8e1640;margin:9px 0 18px}
+.option{display:block;width:100%;padding:14px 13px;margin:10px 0;border-radius:16px;background:rgba(255,255,255,.76);color:#5b1733;text-align:left;border:1px solid rgba(142,22,64,.1);transition:.18s}
+.option:active{transform:scale(.98)}
+.option.correct{background:#ffdbe6;box-shadow:0 0 0 2px #ff4f78 inset}
+.option.wrong{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.reaction{font-family:Caveat,cursive;font-size:26px;line-height:1.05;margin:14px 4px 0;color:#8e1640;min-height:30px}
+
+.letter-screen{display:block;padding:0;overflow:visible}
+.letter-bg{position:fixed;inset:0;z-index:1;overflow:hidden;background:linear-gradient(135deg,#ffdae3,#ff6689 50%,#bd174f)}
+.letter-bg:after{content:"";position:absolute;inset:0;background:rgba(255,239,243,.35)}
+.photo{position:absolute;left:50%;top:50%;width:clamp(120px,31vw,180px);padding:9px 9px 28px;background:rgba(255,251,247,.76);box-shadow:0 18px 45px rgba(85,0,30,.16);border-radius:2px;filter:blur(2.4px);opacity:.31;transform:translate(-50%,-50%) rotate(var(--rot));animation:drift var(--dur) ease-in-out infinite alternate;object-fit:contain}
+@keyframes drift{from{margin-left:calc(var(--dx) * -1);margin-top:calc(var(--dy) * -1)}to{margin-left:var(--dx);margin-top:var(--dy)}}
+.letter-content{position:relative;z-index:5;width:min(100%,720px);margin:auto;padding:70px 22px 100px}
+.paper{background:rgba(255,249,245,.92);border:1px solid rgba(255,255,255,.7);border-radius:28px;box-shadow:0 24px 80px rgba(96,0,35,.22);padding:34px 23px 42px;backdrop-filter:blur(9px);-webkit-backdrop-filter:blur(9px)}
+.letter-title{text-align:center;font-family:Caveat,cursive;font-size:52px;line-height:.9;color:#8e1640;margin:0 0 18px}
+.letter-intro{text-align:center;font-family:Caveat,cursive;font-size:24px;color:#a11b4d;margin-bottom:30px}
+.letter p{font-family:Caveat,cursive;font-size:24px;line-height:1.32;margin:0 0 22px;color:#4d1931}
+.heartword{color:#d51b56;font-weight:700}
+.memory{margin:28px -2px;padding:19px 17px;border-left:4px solid #ff4f78;background:rgba(255,218,228,.5);border-radius:0 18px 18px 0}
+.date{font-size:16px;letter-spacing:.08em;font-family:"DM Sans",sans-serif;color:#a11b4d;font-weight:700}
+.divider{text-align:center;margin:35px 0;font-size:22px;letter-spacing:8px}
+.signature{text-align:right;font-family:Caveat,cursive;font-size:29px;color:#8e1640;margin-top:34px}
+.mini-note{font-family:Caveat,cursive;font-size:20px!important;opacity:.75}
+.final-btn{margin-top:25px}
+.eyes-wrap{width:min(100%,420px);text-align:center}
+.eyes-wrap img{width:100%;border-radius:24px;box-shadow:0 24px 70px rgba(80,0,35,.3);display:block}
+.eyes-caption{font-family:Caveat,cursive;font-size:25px;color:#fff;margin:18px 8px 0;line-height:1.15}
+.nickname-card{text-align:center}
+.nickname-card p{font-family:Caveat,cursive;font-size:26px;line-height:1.15;color:#7f173c}
+.nickname-card .field{text-align:left}
+.wa{background:#1f9d55}
+
+.toast{position:fixed;z-index:100;left:50%;bottom:22px;transform:translateX(-50%) translateY(20px);padding:10px 15px;background:rgba(55,0,25,.84);color:#fff;border-radius:999px;font-size:13px;opacity:0;transition:.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+@media (min-width:600px){
+ .letter-content{padding-top:90px}
+ .paper{padding:52px 55px 58px}
+ .letter p{font-size:27px}
+}
+@media (prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="ambient" id="ambient"></div>
+
+  <section class="screen active" id="welcome">
+    <div class="card">
+      <span class="lock-icon">💗</span>
+      <div class="kicker">A little something</div>
+      <h1>Honeyska! 💕</h1>
+      <div class="subtitle">This is for you — by your favorite Batman 🦇</div>
+      <button class="primary" onclick="go('nameLock')">Okay… open it 👀</button>
+    </div>
+  </section>
+
+  <section class="screen" id="nameLock">
+    <div class="card">
+      <span class="lock-icon">🔒</span>
+      <div class="kicker">Cute little diary lock</div>
+      <h2>What is my name?</h2>
+      <div class="subtitle">You literally gave me this nickname 😭</div>
+      <input class="field" id="nameInput" autocomplete="off" placeholder="Type it here…" />
+      <div class="hint">My nickname given by you :)</div>
+      <div class="error" id="nameError"></div>
+      <button class="primary" onclick="checkName()">Unlock 🦇</button>
+    </div>
+  </section>
+
+  <section class="screen" id="birthday">
+    <div class="card">
+      <span class="lock-icon">🎂</span>
+      <div class="kicker">One more tiny lock</div>
+      <h2>Batman’s birthday?</h2>
+      <div class="subtitle">Okay, this one should be easy… right? 👀</div>
+      <input class="field" id="birthdayInput" inputmode="numeric" autocomplete="off" placeholder="DD/MM/YYYY" />
+      <div class="error" id="birthdayError"></div>
+      <button class="primary" onclick="checkBirthday()">Continue 💗</button>
+    </div>
+  </section>
+
+  <section class="screen" id="quiz">
+    <div class="quiz-wrap">
+      <div class="progress" id="progress"></div>
+      <div class="card quiz-card">
+        <div class="qnum" id="qnum"></div>
+        <div class="question" id="question"></div>
+        <div id="answers"></div>
+        <div class="reaction" id="reaction"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="granted">
+    <div class="card">
+      <span class="lock-icon">🔓</span>
+      <div class="kicker">well… you made it</div>
+      <h1>ACCESS GRANTED 🦇🔓</h1>
+      <div class="success">I knew you'd remember.</div>
+      <button class="primary" onclick="openLetter()">Open my letter 💌</button>
+    </div>
+  </section>
+
+  <section class="screen letter-screen" id="letter">
+    <div class="letter-bg" id="photoBg"></div>
+    <div class="letter-content">
+      <div class="paper letter">
+        <div class="letter-title">Okay… now the actual matter. 💌</div>
+        <div class="letter-intro">Honeyska, konjam ukkandhu padichu mudichitu po. 😭❤️</div>
+
+        <p>Honestly, where do I even start? Maybe <span class="heartword">11th</span>.</p>
+
+        <p>11th-la enakku mela unakku feelings irundhuchu. Adhu enakku therinjirundhum, naan enna pannenu unakku theriyum. En image, en reputation, en ego — idhellam nenachu naan unna reject panniten. Unna hurt panniten. Unna vittutu poiten. Basically, naan unna anga thaniya rot aaga vittuten.</p>
+
+        <p>And ippo 12th-la vandhu thirumbi paatha, adhu evlo wrong-ah irundhuchu nu enakku puriyudhu. Especially… <span class="heartword">un feelings innum appadiye irukku</span> nu therinjapo.</p>
+
+        <div class="memory">
+          <div class="date">12 / 07 / 2026</div>
+          <p style="margin:8px 0 0">Thanishka-oda function-la dhaan enakku idhu proper-ah therinjadhu. Un birthday-ku exactly one month after. And honestly, andha moment enakku romba touch aachu.</p>
+        </div>
+
+        <p>Family problems nala un birthday-ku school-la irundhu unna paaka mudiyala. Adhuku naan genuinely sorry. Andha day-la un kooda irukka mudiyama pochu nu innum konjam varutham irukku.</p>
+
+        <p>But after all that… one thing changed in me. I decided that if I'm going to be there, then <span class="heartword">every little bit of love and effort</span> I have, I'm going to give it properly.</p>
+
+        <div class="divider">💗 🧿 🫶 🪬 💗</div>
+
+        <p>Unna pathi enakku romba pidicha oru vishayam — <span class="heartword">nee panra chinna chinna vishayangal kooda enna happy aakudhu.</span> Sometimes adhu unakku perusa onnum illa. Aana enakku? Adhu whole mood-ah maathidum.</p>
+
+        <p>And one thing that gets me every single time — enna suthi irukkura sila perukku enna pidikama irundhalum, nee innum enna care panra. Adha naan summa eduthuka maaten. Seriously.</p>
+
+        <p>Naan oru <span class="heartword">mfking egoist</span> nu sollikalaam 😭. Aana unna kitta pesumbodhu andha ego ellam enga poidudhu nu enakkum theriyadhu. Nee somehow adha off pannidra.</p>
+
+        <p>And that bottle. 😭 Nee enakku bottle kuduthu, “hydrate ah iru” nu indirectly solli vechadhu… before that naan water proper-ah kudikkave maaten. Ippo bottle paakumbodhellam, seri seri, water kudikanum nu nyabagam varudhu. 💀❤️</p>
+
+        <p>Innum oru weirdly important thing: every night, unna kitta pesitu dhaan sleep pona, mind peaceful-ah irukkum. Day full-ah enna nadandhalum, namma pesina apram oru “okay, now I'm good” feeling varum.</p>
+
+        <p>Un kitta minuses irukku. Un friends, konjam un <span class="heartword">shit</span> 😭 — idhellam naan ignore pannala. Aana somehow, un positives adhellam vida romba perusa irukku. That's why I'm still here, writing this whole damn thing.</p>
+
+        <p>Sometimes nee unakkulla unna romba harsh-ah paakra. Aana naan unna paakura way vera. Nee unna eppadi paathalum, <span class="heartword">enakku nee beautiful-ah dhaan theriyura.</span> And more importantly, nee enoda worst side-um paathirukka. Enna ugly moments-la paathirukka. Still… you chose to stay.</p>
+
+        <p>Namma rendu perum different places, different backgrounds, Tamil–Marathi nu neraya differences irukku. Future exact-ah epdi pogum nu naan solla mudiyadhu. Aana oru vishayam mattum solla mudiyum: <span class="heartword">I want to stand by you.</span> Enakku ippo future-a pathi periya promises panna theriyadhu. But unna value panradha, unna respect panradha, namma irukkura indha time-a full-ah live panradha — idhellam naan serious-ah eduthukren.</p>
+
+        <p>Because this is our last year at school together. After this, naan Punjab move aaguren. Daily paakuradhu, random-ah pesuradhu, school-la same place-la irukradhu — idhellam change aagum. So honestly, I just want to <span class="heartword">enjoy every second I get with you now.</span></p>
+
+        <div class="divider">🫂 🌍 💓 🧿 💖 🪬 💝</div>
+
+        <p>And hey… <span class="heartword">Sivani</span> nu koopda maaten. 😭 Adhu en past-la oruthanga peru, so adhu enakku set aagadhu.</p>
+
+        <p>Naan unna <span class="heartword">Mah</span> nu koopdren, aana unakku adhuvum pudikadhu nu enakku nalla theriyum 😭😂. So seri — Mah-um illa, Sivani-yum illa.</p>
+
+        <p>Appo nee dhaan sollu… unna enna nu koopdanum? Unakku pudicha oru peru nee dhaan choose pannu. Andha peru namakku mattum special-ah irukkattum. 👀❤️</p>
+
+        <p>But for now… <span class="heartword">Honnneeyysskkaa</span> dhaan. 💗</p>
+
+        <p>And maybe that's what this whole thing is. Not some huge perfect speech. Just a stupid amount of little things I remember, little things you do, and all the feelings that came with them.</p>
+
+        <p>So yeah. Thank you for still being here. Thank you for knowing the real me — not just the version I show everyone else. And thank you for giving your Batman a reason to put all this together. 🦇❤️</p>
+
+        <p class="mini-note">P.S. You made me choose between writing a normal letter and making an entire website. Clearly you lost. 😭</p>
+
+        <div class="signature">Your Batman 🦇❤️<br><span style="font-size:22px">a.k.a Tejas</span></div>
+
+        <div class="mini-note" style="text-align:center;margin-top:28px">There's something hidden in here… 🧿</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="screen" id="finalEyes">
+    <div class="eyes-wrap">
+      <img src="eyes.jpg" alt="The eyes photo">
+      <div class="eyes-caption">Okay yes… this one was AI 😭<br>But anyway… one day we'll recreate this for real. ❤️</div>
+      <button class="primary" onclick="go('nickname')">Okay… there's one more thing 👀</button>
+    </div>
+  </section>
+
+  <section class="screen" id="nickname">
+    <div class="card nickname-card">
+      <div class="kicker">Last tiny thing</div>
+      <h2>Okay Honeyska… 👀</h2>
+      <p>Mah pudikadhu.<br>Sivani koopda maaten.<br><strong>So… naan unna enna nu koopdanum?</strong></p>
+      <input class="field" id="nicknameInput" autocomplete="off" placeholder="Your answer…" />
+      <button class="primary wa" onclick="sendNickname()">Send it to Batman 🦇</button>
+      <div class="hint">WhatsApp will open with your answer ready to send.</div>
+    </div>
+  </section>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const photos = [
+        'photos/photo_001.jpg',
+        'photos/photo_002.jpg',
+        'photos/photo_003.jpg',
+        'photos/photo_004.jpg',
+        'photos/photo_005.jpg',
+        'photos/photo_006.jpg',
+        'photos/photo_007.jpg',
+        'photos/photo_008.jpg',
+        'photos/photo_009.jpg',
+        'photos/photo_010.jpg',
+        'photos/photo_011.jpg',
+        'photos/photo_012.jpg',
+        'photos/photo_013.jpg',
+        'photos/photo_014.jpg',
+        'photos/photo_015.jpg',
+        'photos/photo_016.jpg',
+        'photos/photo_017.jpg',
+        'photos/photo_018.jpg',
+        'photos/photo_019.jpg',
+        'photos/photo_020.jpg',
+        'photos/photo_021.jpg',
+        'photos/photo_022.jpg',
+        'photos/photo_023.jpg',
+        'photos/photo_024.jpg',
+        'photos/photo_025.jpg',
+        'photos/photo_026.jpg',
+        'photos/photo_027.jpg',
+        'photos/photo_028.jpg',
+        'photos/photo_029.jpg',
+        'photos/photo_030.jpg',
+        'photos/photo_031.jpg',
+        'photos/photo_032.jpg',
+        'photos/photo_033.jpg',
+        'photos/photo_034.jpg',
+        'photos/photo_035.jpg',
+        'photos/photo_036.jpg',
+        'photos/photo_037.jpg',
+        'photos/photo_038.jpg',
+        'photos/photo_039.jpg',
+        'photos/photo_040.jpg',
+        'photos/photo_041.jpg',
+        'photos/photo_042.jpg',
+        'photos/photo_043.jpg',
+        'photos/photo_044.jpg',
+        'photos/photo_045.jpg',
+        'photos/photo_046.jpg',
+        'photos/photo_047.jpg',
+        'photos/photo_048.jpg',
+        'photos/photo_049.jpg',
+        'photos/photo_050.jpg',
+        'photos/photo_051.jpg',
+        'photos/photo_052.heic',
+        'photos/photo_053.jpg',
+        'photos/photo_054.jpg'
+];
+
+const questions = [
+  {
+    q:"Naan un mela serious-ah iruken nu unakku first-ah eppo realize aachu?",
+    type:"text",
+    reaction:"Wow… naan ah appdi lam irukenn??? 😭"
+  },
+  {
+    q:"Enna pathi edhu unna ivlo mad-ah aakudhu?",
+    type:"text",
+    reaction:"Ahnnn seri seri… inmel thirithikuren 😭😂"
+  },
+  {
+    q:"Summa edhuvume illama argument start panna yaaru adhigama chance irukku?",
+    options:["Batman","Honnneeyysskkaa"],
+    correct:1,
+    wrong:"Wrong 😭 Batman, innoru vaati try pannu."
+  },
+  {
+    q:"Naan unna first time enna nu koopten?",
+    options:["Honnneeyysskkaa","Mah","Pappa","Sivani"],
+    correct:2,
+    reactions:[
+      "Awww nice try 😭 aana idhu first illa… konjam pinnadi po.",
+      "Mah later vandhuchu 😭 try again.",
+      "Unakku dhaan adhu pudikathu nu sollita... so naan koopda maten 😭",
+      "SIVANI??? 😭 idhu kandippa illa."
+    ]
+  },
+  {
+    q:"Naan unakku eppo propose panna poren? 👀",
+    options:[
+      "School-la ellarum irukkumbodhu 😭",
+      "Chat-la midnight 12-ku",
+      "Namma rendu perum mattum irukkura, yaarum pakkathula illaadha oru moment-la ❤️",
+      "Exam mudinja udane staff room pakkathula 💀"
+    ],
+    correct:2,
+    wrong:"Aiyo Honnneeyysskkaa 😭 konjam yosichu paaru… Batman ivlo obvious-ah pannuvaana?",
+    correctReaction:"Hmmmm… correct. Nee enna nalla therinjirukka 👀❤️"
+  }
+];
+
+let qi=0;
+
+function go(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function checkName(){
+  startMusic("Kaadhal Aasai.mp3");
+  const v=document.getElementById("nameInput").value.trim().toLowerCase();
+  const e=document.getElementById("nameError");
+  if(v==="batman"){
+    e.textContent="";
+    go("birthday");
+  }else{
+    e.textContent="Hmm… wrong answer 😭 Try again.";
+  }
+}
+
+function checkBirthday(){
+  const v=document.getElementById("birthdayInput").value.trim();
+  const e=document.getElementById("birthdayError");
+  if(v==="13/10/2008"){
+    e.textContent="";
+    qi=0; renderQuestion(); go("quiz");
+  }else e.textContent="Batman birthday illa idhu 😭";
+}
+
+function renderQuestion(){
+  const q=questions[qi];
+  document.getElementById("qnum").textContent=`QUESTION ${qi+1} / ${questions.length}`;
+  document.getElementById("question").textContent=q.q;
+  document.getElementById("reaction").textContent="";
+  const ans=document.getElementById("answers");
+  ans.innerHTML="";
+  const prog=document.getElementById("progress");
+  prog.innerHTML=questions.map((_,i)=>`<div class="dot ${i<qi?'done':''}"></div>`).join("");
+
+  if(q.type==="text"){
+    ans.innerHTML=`<input class="field" id="freeAnswer" autocomplete="off" placeholder="Type literally anything…"><button class="primary" onclick="submitText()">Submit 👀</button>`;
+  }else{
+    q.options.forEach((o,i)=>{
+      const b=document.createElement("button");
+      b.className="option";
+      b.textContent=o;
+      b.onclick=()=>answerOption(i,b);
+      ans.appendChild(b);
+    });
+  }
+}
+
+function submitText(){
+  const v=document.getElementById("freeAnswer").value.trim();
+  if(!v)return;
+  document.getElementById("reaction").textContent=questions[qi].reaction;
+  setTimeout(nextQuestion,1150);
+}
+
+function answerOption(i,b){
+  const q=questions[qi];
+  if(i===q.correct){
+    b.classList.add("correct");
+    document.getElementById("reaction").textContent=q.correctReaction || q.reactions?.[i] || "Correct 😭❤️";
+    setTimeout(nextQuestion,1250);
+  }else{
+    b.classList.add("wrong");
+    if(q.reactions) document.getElementById("reaction").textContent=q.reactions[i] || "Nope 😭 try again.";
+    else document.getElementById("reaction").textContent=q.wrong;
+  }
+}
+
+function nextQuestion(){
+  qi++;
+  if(qi>=questions.length) go("granted");
+  else renderQuestion();
+}
+
+function openLetter(){
+  buildPhotos();
+  go("letter");
+  startMusic("Maula Mere.mp3");
+}
+
+function buildPhotos(){
+  const bg=document.getElementById("photoBg");
+  if(bg.dataset.ready)return;
+  photos.forEach((src,i)=>{
+    const img=document.createElement("img");
+    img.className="photo";
+    img.src=src;
+    img.loading="lazy";
+    img.style.setProperty("--rot", `${-12 + Math.random()*24}deg`);
+    img.style.setProperty("--dur", `${18 + Math.random()*13}s`);
+    img.style.setProperty("--dx", `${25 + Math.random()*80}px`);
+    img.style.setProperty("--dy", `${25 + Math.random()*80}px`);
+    img.style.left=`${Math.random()*100}%`;
+    img.style.top=`${Math.random()*100}%`;
+    bg.appendChild(img);
+  });
+  bg.dataset.ready="1";
+}
+
+function startMusic(file){
+  let a=document.getElementById("music");
+  if(!a){
+    a=document.createElement("audio"); a.id="music"; a.loop=true; a.preload="auto"; document.body.appendChild(a);
+  }
+  a.src="audio/"+encodeURIComponent(file);
+  a.play().catch(()=>showToast("Tap anywhere to start the music 🎵"));
+}
+
+document.addEventListener("click",()=>{
+  const a=document.getElementById("music");
+  if(a && a.paused) a.play().catch(()=>{});
+},{once:false});
+
+let eyeTaps=0, eyeTimer=null;
+function addAmbient(){
+  const symbols=["💓","🫀","🫂","🌍","💗","🧿","🪬","🫶","💖","💝","💕","💞","❤️","✨"];
+  const amb=document.getElementById("ambient");
+  for(let i=0;i<30;i++){
+    const s=document.createElement("span");
+    s.className="emoji";
+    s.textContent=symbols[i%symbols.length];
+    s.style.left=Math.random()*100+"%";
+    s.style.top=Math.random()*100+"%";
+    s.style.fontSize=(12+Math.random()*18)+"px";
+    s.style.setProperty("--dur",(5+Math.random()*8)+"s");
+    s.style.animationDelay=(-Math.random()*8)+"s";
+    amb.appendChild(s);
+  }
+}
+addAmbient();
+
+function showToast(t){
+  const x=document.getElementById("toast"); x.textContent=t; x.classList.add("show");
+  setTimeout(()=>x.classList.remove("show"),2200);
+}
+
+function sendNickname(){
+  const v=document.getElementById("nicknameInput").value.trim();
+  if(!v){showToast("Batman is waiting for an answer 😭");return;}
+  const text=`Honeyska's answer 💗%0A%0AWhat should Batman call me?%0A${encodeURIComponent(v)}%0A%0A— sent from your little website 🦇`;
+  window.location.href=`https://wa.me/919342466488?text=${text}`;
+}
+
+// Secret: tap the 🧿 ambient emoji three times while the letter is open.
+document.addEventListener("click",(ev)=>{
+  if(!document.getElementById("letter").classList.contains("active"))return;
+  if(ev.target && ev.target.classList.contains("emoji") && ev.target.textContent==="🧿"){
+    eyeTaps++;
+    clearTimeout(eyeTimer);
+    eyeTimer=setTimeout(()=>eyeTaps=0,1200);
+    if(eyeTaps===3){
+      eyeTaps=0;
+      showToast("You found something… 👀");
+      setTimeout(()=>go("finalEyes"),450);
+    }
+  }
+});
+
+document.getElementById("nameInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkName()});
+document.getElementById("birthdayInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkBirthday()});
+</script>
+</body>
+</html>
