@@ -64,15 +64,7 @@ h2{font-size:40px;line-height:1}
 @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
 .reaction{font-family:Caveat,cursive;font-size:26px;line-height:1.05;margin:14px 4px 0;color:#8e1640;min-height:30px}
 
-.letter-screen {
-  display: none;
-  padding: 0;
-  overflow: visible;
-}
-.letter-screen.active {
-  display: block;
-}
-.letter-screen.active {display: block;}
+.letter-screen{display: none;padding: 0;overflow: visible;}
 .letter-screen.active{display: block;}
 .letter-bg{position:fixed;inset:0;z-index:1;overflow:hidden;background:linear-gradient(135deg,#ffdae3,#ff6689 50%,#bd174f)}
 .letter-bg:after{content:"";position:absolute;inset:0;background:rgba(255,239,243,.35)}
@@ -232,11 +224,7 @@ h2{font-size:40px;line-height:1}
 
         <div class="signature">Your Batman 🦇❤️<br><span style="font-size:22px">a.k.a Tejas</span></div>
 
-        <div class="mini-note" style="text-align:center;margin-top:28px">There's something hidden in here…
-  <div id="secretEye" style="font-size: 52px; margin-top: 12px; cursor: pointer; user-select: none; display: inline-block; transition: transform 0.2s;">
-    🧿
-  </div>
-</div>
+        <div class="mini-note" style="text-align:center;margin-top:28px">There's something hidden in here… 🧿</div>
       </div>
     </div>
   </section>
@@ -510,43 +498,27 @@ function sendNickname(){
   window.location.href=`https://wa.me/919342466488?text=${text}`;
 }
 
-// Auto format birthday as DD/MM/YYYY
+// Secret: tap the 🧿 ambient emoji three times while the letter is open.
+document.addEventListener("click",(ev)=>{
+  if(!document.getElementById("letter").classList.contains("active"))return;
+  if(ev.target && ev.target.classList.contains("emoji") && ev.target.textContent==="🧿"){
+    eyeTaps++;
+    clearTimeout(eyeTimer);
+    eyeTimer=setTimeout(()=>eyeTaps=0,1200);
+    if(eyeTaps===3){
+      eyeTaps=0;
+      showToast("You found something… 👀");
+      setTimeout(()=>go("finalEyes"),450);
+    }
+  }
+});
+  // Auto format birthday as DD/MM/YYYY
 document.getElementById("birthdayInput").addEventListener("input", function(e) {
-  let value = e.target.value.replace(/\D/g, "");
+  let value = e.target.value.replace(/\D/g, ""); // only numbers
   if (value.length > 2) value = value.slice(0,2) + "/" + value.slice(2);
   if (value.length > 5) value = value.slice(0,5) + "/" + value.slice(5,9);
   e.target.value = value;
 });
-
-document.getElementById("nameInput").addEventListener("keydown", e => {
-  if (e.key === "Enter") checkName();
-});
-document.getElementById("birthdayInput").addEventListener("keydown", e => {
-  if (e.key === "Enter") checkBirthday();
-});
-
-// Big 🧿 secret – tap 3 times
-let eyeTaps = 0;
-let eyeTimer = null;
-
-const secretEye = document.getElementById("secretEye");
-if (secretEye) {
-  secretEye.addEventListener("click", function() {
-    eyeTaps++;
-    this.style.transform = "scale(1.25)";
-    setTimeout(() => this.style.transform = "scale(1)", 150);
-
-    clearTimeout(eyeTimer);
-    eyeTimer = setTimeout(() => eyeTaps = 0, 1500);
-
-    if (eyeTaps === 3) {
-      eyeTaps = 0;
-      showToast("You found something… 👀");
-      setTimeout(() => go("finalEyes"), 500);
-    }
-  });
-}
-  
 
 document.getElementById("nameInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkName()});
 document.getElementById("birthdayInput").addEventListener("keydown",e=>{if(e.key==="Enter")checkBirthday()});
