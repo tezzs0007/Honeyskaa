@@ -69,14 +69,14 @@ h2{font-size:40px;line-height:1}
 .letter-bg{position:fixed;inset:0;z-index:1;overflow:hidden;background:linear-gradient(135deg,#ffdae3,#ff6689 50%,#bd174f)}
 .letter-bg:after{content:"";position:absolute;inset:0;background:rgba(255,239,243,.35)}
 .photo{
-  position:absolute;
-  width: clamp(90px, 22vw, 140px);
-  padding: 7px 7px 22px;
-  background: rgba(255,251,247,.85);
-  box-shadow: 0 12px 30px rgba(85,0,30,.18);
-  border-radius: 2px;
-  filter: blur(1.8px);
-  opacity: 0.22;
+  position: absolute;
+  width: clamp(130px, 28vw, 190px);
+  padding: 8px 8px 26px;
+  background: rgba(255,251,247,0.95);
+  box-shadow: 0 14px 35px rgba(85,0,30,0.22);
+  border-radius: 3px;
+  filter: blur(0.6px);
+  opacity: 0.55;
   transform: rotate(var(--rot));
   animation: drift var(--dur) ease-in-out infinite alternate;
   object-fit: cover;
@@ -443,25 +443,31 @@ function buildPhotos(){
   const bg = document.getElementById("photoBg");
   if(bg.dataset.ready) return;
 
-  // Use fewer photos so they don’t crowd
-  const selected = photos.sort(() => 0.5 - Math.random()).slice(0, 28);
+  // Use more photos
+  const selected = photos.sort(() => 0.5 - Math.random()).slice(0, 42);
 
-  selected.forEach((src) => {
+  selected.forEach((src, index) => {
     const img = document.createElement("img");
     img.className = "photo";
     img.src = src;
     img.loading = "lazy";
 
-    // Better spread across the whole screen
-    const left = 5 + Math.random() * 90;   // 5% to 95%
-    const top  = 5 + Math.random() * 90;
+    // Better grid-like spread to reduce overlapping
+    const cols = 6;
+    const rows = 7;
+    const col = index % cols;
+    const row = Math.floor(index / cols);
+
+    // Add some randomness so it doesn't look too rigid
+    const left = (col * 16) + 4 + (Math.random() * 6);
+    const top  = (row * 13) + 3 + (Math.random() * 5);
 
     img.style.left = left + "%";
     img.style.top = top + "%";
-    img.style.setProperty("--rot", `${-18 + Math.random()*36}deg`);
-    img.style.setProperty("--dur", `${22 + Math.random()*18}s`);
-    img.style.setProperty("--dx", `${40 + Math.random()*90}px`);
-    img.style.setProperty("--dy", `${30 + Math.random()*80}px`);
+    img.style.setProperty("--rot", `${-16 + Math.random()*32}deg`);
+    img.style.setProperty("--dur", `${20 + Math.random()*16}s`);
+    img.style.setProperty("--dx", `${30 + Math.random()*70}px`);
+    img.style.setProperty("--dy", `${25 + Math.random()*60}px`);
 
     bg.appendChild(img);
   });
