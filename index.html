@@ -253,60 +253,17 @@ h2{font-size:40px;line-height:1}
 
 <script>
 const photos = [
-        'photos/photo_001.jpg',
-        'photos/photo_002.jpg',
-        'photos/photo_003.jpg',
-        'photos/photo_004.jpg',
-        'photos/photo_005.jpg',
-        'photos/photo_006.jpg',
-        'photos/photo_007.jpg',
-        'photos/photo_008.jpg',
-        'photos/photo_009.jpg',
-        'photos/photo_010.jpg',
-        'photos/photo_011.jpg',
-        'photos/photo_012.jpg',
-        'photos/photo_013.jpg',
-        'photos/photo_014.jpg',
-        'photos/photo_015.jpg',
-        'photos/photo_016.jpg',
-        'photos/photo_017.jpg',
-        'photos/photo_018.jpg',
-        'photos/photo_019.jpg',
-        'photos/photo_020.jpg',
-        'photos/photo_021.jpg',
-        'photos/photo_022.jpg',
-        'photos/photo_023.jpg',
-        'photos/photo_024.jpg',
-        'photos/photo_025.jpg',
-        'photos/photo_026.jpg',
-        'photos/photo_027.jpg',
-        'photos/photo_028.jpg',
-        'photos/photo_029.jpg',
-        'photos/photo_030.jpg',
-        'photos/photo_031.jpg',
-        'photos/photo_032.jpg',
-        'photos/photo_033.jpg',
-        'photos/photo_034.jpg',
-        'photos/photo_035.jpg',
-        'photos/photo_036.jpg',
-        'photos/photo_037.jpg',
-        'photos/photo_038.jpg',
-        'photos/photo_039.jpg',
-        'photos/photo_040.jpg',
-        'photos/photo_041.jpg',
-        'photos/photo_042.jpg',
-        'photos/photo_043.jpg',
-        'photos/photo_044.jpg',
-        'photos/photo_045.jpg',
-        'photos/photo_046.jpg',
-        'photos/photo_047.jpg',
-        'photos/photo_048.jpg',
-        'photos/photo_049.jpg',
-        'photos/photo_050.jpg',
-        'photos/photo_051.jpg',
-        'photos/photo_052.heic',
-        'photos/photo_053.jpg',
-        'photos/photo_054.jpg'
+        'photos/photo_001.jpg','photos/photo_002.jpg','photos/photo_003.jpg','photos/photo_004.jpg','photos/photo_005.jpg',
+        'photos/photo_006.jpg','photos/photo_007.jpg','photos/photo_008.jpg','photos/photo_009.jpg','photos/photo_010.jpg',
+        'photos/photo_011.jpg','photos/photo_012.jpg','photos/photo_013.jpg','photos/photo_014.jpg','photos/photo_015.jpg',
+        'photos/photo_016.jpg','photos/photo_017.jpg','photos/photo_018.jpg','photos/photo_019.jpg','photos/photo_020.jpg',
+        'photos/photo_021.jpg','photos/photo_022.jpg','photos/photo_023.jpg','photos/photo_024.jpg','photos/photo_025.jpg',
+        'photos/photo_026.jpg','photos/photo_027.jpg','photos/photo_028.jpg','photos/photo_029.jpg','photos/photo_030.jpg',
+        'photos/photo_031.jpg','photos/photo_032.jpg','photos/photo_033.jpg','photos/photo_034.jpg','photos/photo_035.jpg',
+        'photos/photo_036.jpg','photos/photo_037.jpg','photos/photo_038.jpg','photos/photo_039.jpg','photos/photo_040.jpg',
+        'photos/photo_041.jpg','photos/photo_042.jpg','photos/photo_043.jpg','photos/photo_044.jpg','photos/photo_045.jpg',
+        'photos/photo_046.jpg','photos/photo_047.jpg','photos/photo_048.jpg','photos/photo_049.jpg','photos/photo_050.jpg',
+        'photos/photo_051.jpg','photos/photo_052.heic','photos/photo_053.jpg','photos/photo_054.jpg'
 ];
 
 const questions = [
@@ -512,9 +469,10 @@ document.addEventListener("click",(ev)=>{
     }
   }
 });
-  // Auto format birthday as DD/MM/YYYY
+
+// Auto format birthday as DD/MM/YYYY
 document.getElementById("birthdayInput").addEventListener("input", function(e) {
-  let value = e.target.value.replace(/\D/g, ""); // only numbers
+  let value = e.target.value.replace(/\D/g, "");
   if (value.length > 2) value = value.slice(0,2) + "/" + value.slice(2);
   if (value.length > 5) value = value.slice(0,5) + "/" + value.slice(5,9);
   e.target.value = value;
