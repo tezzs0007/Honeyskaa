@@ -64,7 +64,14 @@ h2{font-size:40px;line-height:1}
 @keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
 .reaction{font-family:Caveat,cursive;font-size:26px;line-height:1.05;margin:14px 4px 0;color:#8e1640;min-height:30px}
 
-.letter-screen{display:block;padding:0;overflow:visible}
+.letter-screen{
+  display: none;
+  padding: 0;
+  overflow: visible;
+}
+.letter-screen.active{
+  display: block;
+}
 .letter-bg{position:fixed;inset:0;z-index:1;overflow:hidden;background:linear-gradient(135deg,#ffdae3,#ff6689 50%,#bd174f)}
 .letter-bg:after{content:"";position:absolute;inset:0;background:rgba(255,239,243,.35)}
 .photo{position:absolute;left:50%;top:50%;width:clamp(120px,31vw,180px);padding:9px 9px 28px;background:rgba(255,251,247,.76);box-shadow:0 18px 45px rgba(85,0,30,.16);border-radius:2px;filter:blur(2.4px);opacity:.31;transform:translate(-50%,-50%) rotate(var(--rot));animation:drift var(--dur) ease-in-out infinite alternate;object-fit:contain}
